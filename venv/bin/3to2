@@ -1,0 +1,6 @@
+#!/home/streuby/mysite/venv/bin/python2.7
+import sys
+
+from lib3to2.main import main
+
+sys.exit(main("lib3to2.fixes"))
