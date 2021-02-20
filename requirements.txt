@@ -43,3 +43,6 @@ httplib2
 apiclient
 validate_email
 oauth2client
+wtforms
+email-validator
+PySocks

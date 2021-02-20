@@ -21,3 +21,5 @@ class Config(object):
     SECRET_KEY = os.urandom(24) #'abele_ke_neke_ma'
 
     SECURITY_PASSWORD_SALT = 'my_password_salt'
+
+    LANGUAGES = ['en', 'es']

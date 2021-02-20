@@ -52,36 +52,43 @@ year = datetime.utcnow().year
 # app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://mail.google.com/'] 
+SCOPES = ['https://mail.google.com/']
 
 def main():
     """Shows basic usage of the Gmail API.
     Lists the user's Gmail labels.
     """
-    creds = None
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'client_id.json', SCOPES)
-            creds = flow.run_local_server(port=9999)
-        # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
+    try:
+        creds = None
+        # The file token.pickle stores the user's access and refresh tokens, and is
+        # created automatically when the authorization flow completes for the first
+        # time.
+        THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+        #my_token = os.path.join(THIS_FOLDER, 'token.pickle')
+        #my_client_id = os.path.join(THIS_FOLDER, 'client_id.json')
+        if os.path.exists('/home/streuby/mysite/token.pickle'):
+            with open('/home/streuby/mysite/token.pickle', 'rb') as token:
+                creds = pickle.load(token)
+        # If there are no (valid) credentials available, let the user log in.
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    '/home/streuby/mysite/client_id.json', SCOPES)
+                creds = flow.run_local_server(port=9999)
+            # Save the credentials for the next run
+            with open('/home/streuby/mysite/token.pickle', 'wb') as token:
+                pickle.dump(creds, token)
 
-    service = build('gmail', 'v1', credentials=creds)
+        service = build('gmail', 'v1', credentials=creds)
 
-    # Call the Gmail API
-    results = service.users().labels().list(userId='me').execute()
-    labels = results.get('labels', [])
+        # Call the Gmail API
+        results = service.users().labels().list(userId='me').execute()
+        labels = results.get('labels', [])
+
+    except Exception as e:
+        print('Error', str(e))
 
     # if not labels:
     #     print('No labels found.')
@@ -201,7 +208,7 @@ def confirm_token(token, expiration=3600):
 		result = serializer.loads(token, salt=SALT, max_age=expiration)
 	except:
 		return False
-	
+
 	return result
 
 def check_email_validation(email):
@@ -258,7 +265,7 @@ def send_shops_email_confirmation_mail(email, subject, template_url, iconurl, lo
   """
   token = generate_confirmation_token(email)
   confirm_url = url_for('confirm_email', token=token, _external=True)
-  html = render_template(str(template_url), confirm_url=confirm_url, iconurl=iconurl, logourl=logourl, 
+  html = render_template(str(template_url), confirm_url=confirm_url, iconurl=iconurl, logourl=logourl,
   client=client, cover_message=cover_message)
 	#send_mail(email, html)
 	#send_mail(email, html, subject, 'HTML')
@@ -386,7 +393,7 @@ def send_sales_invoice(email, subject, template_url, logo_url, client, cover_mes
 #     message = create_message(_from, _to, subject, html, type)
 #     send_message(service, 'me', message)
 #   return
-  
+
 if __name__ == '__main__':
     service = main()
     # send_message(service, 'me', message)
