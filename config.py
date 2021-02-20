@@ -13,7 +13,11 @@ class Config(object):
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    ADMINS = ['ceo@sarbtech.com']
+    ADMINS = ['ceo@sarbtech.com', 'bot@sarbtech.com']
     SECURITY_EMAIL_SENDER = 'streuby@gmail.com'
 
     POSTS_PER_PAGE = 3
+
+    SECRET_KEY = os.urandom(24) #'abele_ke_neke_ma'
+
+    SECURITY_PASSWORD_SALT = 'my_password_salt'
