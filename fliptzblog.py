@@ -1,7 +1,7 @@
 
 # A very simple blog web app
 
-from app import app, db
+from app import app, db, emailprompt
 from app.models import User, Post
 
 @app.shell_context_processor
